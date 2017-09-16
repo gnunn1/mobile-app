@@ -10,7 +10,7 @@
     "format": "clang-format -i -style=file --glob=src/**/*.ts",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor",
-    "build": "npm rebuild node-sass && npm run scss && npm run minify:html",
+    "build": "ng build -prod && npm rebuild node-sass && npm run scss && npm run minify:html",
     "scss": "node-sass --output-style compressed -o dist/app/ src/app/",
     "minify:js": "uglifyjs dist/vendor/blueimp-load-image/js/load-image.all.min.js dist/vendor/es6-shim/es6-shim.js dist/vendor/reflect-metadata/Reflect.js dist/vendor/systemjs/dist/system.src.js dist/vendor/zone.js/dist/zone.js -c -o dist/vendor/vendor.min.js",
     "minify:html": "html-minifier --collapse-whitespace --minify-js --minify-css -o dist/index.html src/index.html",
