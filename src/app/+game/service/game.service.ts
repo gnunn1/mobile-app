@@ -57,6 +57,13 @@ export class GameService {
   }
 
   connect() {
+    // Build the URL to gamebus off of the location string, assumes
+    // app is deployed in same Openshift project
+    if (environment.production) {
+      let hostname = location.hostname;
+      this.socketUrl = "ws://" + hostname.replace("mobile-app-","gamebus-") + "/game"
+    }
+
     if (location.search.indexOf('canary=true') > -1 || this.canary) {
       this.canary = true;
       localStorage.setItem(this._canaryKey, 'true');
