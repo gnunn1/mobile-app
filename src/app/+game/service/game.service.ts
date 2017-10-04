@@ -46,7 +46,7 @@ export class GameService {
     gold: 'golden'
   };
   configuration: Object = {};
-  socketUrl: string = (environment.production) ? 'ws://gamebus-production.apps-test.redhatkeynote.com/game' : 'ws://localhost:9001/game';
+  socketUrl: string = (environment.production) ? 'ws://gamebus-production.apps-test.redhatkeynote.com/game' : 'ws://gamebus-summit-game.192.168.42.24.nip.io/game';
 
   @Output() stateChange = new EventEmitter();
   @Output() configurationChange = new EventEmitter();
@@ -166,6 +166,7 @@ export class GameService {
   }
 
   private onOpen(evt) {
+    console.log("Socket opened");
     this.socketClosed = false;
 
     const message = {
@@ -188,6 +189,7 @@ export class GameService {
   }
 
   private onClose(evt) {
+    console.log("Socket closed");
     setTimeout(() => {
       this.reconnecting = false;
       this.socketClosed = true;
@@ -233,11 +235,15 @@ export class GameService {
 
     if (data.type === 'id') {
       localStorage.setItem(this._playerIdKey, data.id);
+      // Try to fix problem of browser changing identity
+      console.log("Player ID=" + data.id);
+      this.playerId = data.id;
     }
 
     if (data.type === 'configuration') {
       if (data.username) {
         localStorage.setItem(this._usernameKey, data.username);
+        console.log("Username=" + data.username);
         this.playerUsername = data.username;
       }
 
