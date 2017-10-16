@@ -17,7 +17,7 @@ export class GameService {
   private _selfieTakenKey: string = 'selfie-taken';
   private _teamsArray: Array<string> = ['Orange', 'Teal', 'Violet', 'Green'];
   private _teamsClassArray: Array<string> = ['team-orange', 'team-teal', 'team-violet', 'team-green'];
-  private _reconnectInterval: number = 5000;
+  private _reconnectInterval: number = 3000;
 
   ws: any;
   socketClosed: boolean = false;
@@ -46,8 +46,8 @@ export class GameService {
     gold: 'golden'
   };
   configuration: Object = {};
-  //socketUrl: string = (environment.production) ? 'ws://gamebus-production.apps-test.redhatkeynote.com/game' : 'ws://localhost:9001/game';
-  socketUrl: string = (environment.production) ? 'ws://gamebus-production.apps-test.redhatkeynote.com/game' : 'ws://gamebus-summit-game.192.168.42.62.nip.io/game';
+  socketUrl: string = (environment.production) ? 'ws://gamebus-production.apps-test.redhatkeynote.com/game' : 'ws://localhost:9001/game';
+  //socketUrl: string = (environment.production) ? 'ws://gamebus-production.apps-test.redhatkeynote.com/game' : 'ws://gamebus-summit-game.192.168.42.62.nip.io/game';
 
   @Output() stateChange = new EventEmitter();
   @Output() configurationChange = new EventEmitter();
@@ -191,10 +191,35 @@ export class GameService {
 
   private onClose(evt) {
     console.log("Socket closed");
+
+    // Copy the way the admin client handles reconnect to
+    // do it automatically. Reduced interval from 5 to 3 seconds
+    this.socketClosed = true;
+    this.reconnecting = true;
+    let interval;
+    let intervalHandler = () => {
+      console.log("Interval handler executed");
+
+      if (this.ws.readyState === WebSocket.CLOSED) {
+        this.connect();
+        return;
+      }
+
+      if (this.ws.readyState === WebSocket.OPEN) {
+        clearInterval(interval);
+      }
+    }
+    
+    intervalHandler = intervalHandler.bind(this);
+    interval = setInterval(intervalHandler, this._reconnectInterval);
+
+    // Old code that used reconnect button
+    /*
     setTimeout(() => {
       this.reconnecting = false;
       this.socketClosed = true;
     }, 500);
+    */
   }
 
   private onMessage(evt) {
