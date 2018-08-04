@@ -62,7 +62,8 @@ export class GameService {
     // app is deployed in same Openshift project
     if (environment.production) {
       let hostname = location.hostname;
-      this.socketUrl = "ws://" + hostname.replace("mobile-app-","gamebus-") + "/game"
+      this.socketUrl = "ws://" + hostname.replace("mobile-app-","gamebus-") + "/game";
+      console.log("Connecting to " + this.socketUrl);
     }
 
     if (location.search.indexOf('canary=true') > -1 || this.canary) {

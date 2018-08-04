@@ -9,7 +9,7 @@
   },  
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf tmp && rm -rf typings",
-    "start": "ng server -p 8080",
+    "start": "ng server -prod -p 8080",
     "postinstall": "typings install",
     "lint": "tslint \"src/**/*.ts\"",
     "format": "clang-format -i -style=file --glob=src/**/*.ts",
