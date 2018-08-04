@@ -3,8 +3,13 @@
   "version": "0.0.0",
   "license": "MIT",
   "angular-cli": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gnunn1/mobile-app.git"
+  },  
   "scripts": {
-    "start": "ng server -p 8080 -prod",
+    "clean": "rm -rf node_modules && rm -rf tmp && rm -rf typings",
+    "start": "ng server -p 8080",
     "postinstall": "typings install",
     "lint": "tslint \"src/**/*.ts\"",
     "format": "clang-format -i -style=file --glob=src/**/*.ts",
@@ -18,6 +23,7 @@
   },
   "private": true,
   "dependencies": {
+    "angular-cli": "0.0.*",
     "@angular/common": "2.0.0-rc.2",
     "@angular/compiler": "2.0.0-rc.2",
     "@angular/core": "2.0.0-rc.2",
@@ -35,7 +41,6 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "angular-cli": "0.0.*",
     "clang-format": "^1.0.35",
     "codelyzer": "0.0.14",
     "ember-cli-inject-live-reload": "^1.4.0",
